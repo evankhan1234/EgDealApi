@@ -46,7 +46,6 @@ if($_SERVER['REQUEST_METHOD'] === "GET"){
     }else {
         http_response_code(200); //server error
         echo json_encode(array(
-
             "status" => 200,
             "success" => false,
             "message" => "No Users Found"
