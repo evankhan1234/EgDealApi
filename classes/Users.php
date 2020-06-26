@@ -29,6 +29,8 @@ class Users{
   public $product_image2;
   public $product_image3;
   public $product_image4;
+  public $search;
+  public $sub_category_id;
 
   private $conn;
 
@@ -124,10 +126,44 @@ class Users{
         return $units;
 
     }
+    public function getSearch(){
+        $query=("Select * from inv_item where  item_name LIKE ?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->search);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+
+    }
+    public function getProductForSearch()
+    {
+        $result = $this->conn->query("Select * from inv_item");
+        $units = array();
+        while ($item = $result->fetch_assoc())
+            $units[] = $item;
+        return $units;
+
+    }
     public function getProductLByCategoryId(){
         $query=("SELECT * from inv_item where category_id=?");
         $obj = $this->conn->prepare($query);
         $obj->bind_param("s",$this->category_id);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
+    public function getProductBySubCategoryId(){
+        $query=("SELECT * from inv_item where subcategory_id=?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->sub_category_id);
         $units=array();
         if($obj->execute()){
             $data = $obj->get_result();
