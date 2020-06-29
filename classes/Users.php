@@ -31,6 +31,7 @@ class Users{
   public $product_image4;
   public $search;
   public $sub_category_id;
+  public $income_type;
 
   private $conn;
 
@@ -199,6 +200,42 @@ class Users{
         $user_details_query=("Select * from mkt_service where service_id=?");
         $user_details_obj = $this->conn->prepare($user_details_query);
         $user_details_obj->bind_param("s",$this->user_id);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+    public function getIncomeDetailsArabic(){
+        $user_details_query=("Select image_ar as image,link_ar as link,text_ar as text,description_ar as description from mkt_income");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+    public function getIncomeDetailsBengali(){
+    $user_details_query=("Select image_bn as image,link_bn as link,text_bn as text,description_bn as description from mkt_income");
+    $user_details_obj = $this->conn->prepare($user_details_query);
+    if($user_details_obj->execute()){
+        $data = $user_details_obj->get_result();
+        return $data->fetch_assoc();
+    }
+    return NULL;
+}
+    public function getIncomeDetailsHindi(){
+        $user_details_query=("Select image_hi as image,link_hi as link,text_hi as text,description_hi as description from mkt_income");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+    public function getIncomeDetailsEnglish(){
+        $user_details_query=("Select image_en as image,link_en as link,text_en as text,description_en as description  from mkt_income");
+        $user_details_obj = $this->conn->prepare($user_details_query);
         if($user_details_obj->execute()){
             $data = $user_details_obj->get_result();
             return $data->fetch_assoc();
