@@ -12,6 +12,7 @@ class Users{
   public $username;
   public $created;
   public $user_id;
+  public $banner_id;
   public $service_id;
   public $category_id;
   public $service_banner;
@@ -118,6 +119,43 @@ class Users{
             return $units;
 
         }
+
+    public function getBannerByEnglish()
+    {
+        $result = $this->conn->query("Select banner_id, banner_title as title,	banner_img as image,banner_desc as description from gbl_banner WHERE banner_position=1 AND 	category_id=0");
+        $units = array();
+        while ($item = $result->fetch_assoc())
+            $units[] = $item;
+        return $units;
+
+    }
+    public function getBannerByBangla()
+    {
+        $result = $this->conn->query("Select banner_id,banner_title_bn as title,	banner_img_bn as image,banner_desc_bn as description from gbl_banner WHERE banner_position=1 AND category_id=0");
+        $units = array();
+        while ($item = $result->fetch_assoc())
+            $units[] = $item;
+        return $units;
+
+    }
+    public function getBannerByArabic()
+    {
+        $result = $this->conn->query("Select banner_id,banner_title_ar as title,	banner_img_ar as image,banner_desc_ar as description from gbl_banner WHERE banner_position=1 AND 	category_id=0");
+        $units = array();
+        while ($item = $result->fetch_assoc())
+            $units[] = $item;
+        return $units;
+
+    }
+    public function getBannerByHindi()
+    {
+        $result = $this->conn->query("Select banner_id,banner_title_hi as title,banner_img_hi as image,banner_desc_hi as description from gbl_banner WHERE banner_position=1 AND 	category_id=0");
+        $units = array();
+        while ($item = $result->fetch_assoc())
+            $units[] = $item;
+        return $units;
+
+    }
     public function getCategory()
     {
         $result = $this->conn->query("Select category_id,category_name from inv_category");
@@ -174,8 +212,38 @@ class Users{
         }
     }
 
-    public function getBannerByCategoryId(){
-        $user_details_query=("Select * from gbl_banner  where category_id=?");
+    public function getBannerByCategoryIdArabic(){
+        $user_details_query=("Select banner_id,banner_title_ar as title,banner_img_ar as image,banner_desc_ar as description from gbl_banner  where category_id=?");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        $user_details_obj->bind_param("s",$this->category_id);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+    public function getBannerByCategoryIdBangla(){
+        $user_details_query=("Select banner_id,banner_title_bn as title,banner_img_bn as image,banner_desc_bn as description from gbl_banner  where category_id=?");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        $user_details_obj->bind_param("s",$this->category_id);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+    public function getBannerByCategoryIdHindi(){
+        $user_details_query=("Select banner_id,banner_title_hi as title,banner_img_hi as image,banner_desc_hi as description from gbl_banner  where category_id=?");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        $user_details_obj->bind_param("s",$this->category_id);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+    public function getBannerByCategoryIdEnglish(){
+        $user_details_query=("Select banner_id, banner_title as title,	banner_img as image,banner_desc as description from gbl_banner  where category_id=?");
         $user_details_obj = $this->conn->prepare($user_details_query);
         $user_details_obj->bind_param("s",$this->category_id);
         if($user_details_obj->execute()){
@@ -206,6 +274,56 @@ class Users{
         }
         return NULL;
     }
+
+
+    public function getBannerDetailsArabic(){
+        $user_details_query=("Select banner_id,banner_title_ar as title,banner_img_ar as image,banner_desc_ar as description from gbl_banner WHERE banner_id=?");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        $user_details_obj->bind_param("s",$this->banner_id);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+
+    public function getBannerDetailsBangla(){
+        $user_details_query=("Select banner_id,banner_title_bn as title,banner_img_bn as image,banner_desc_bn as description from gbl_banner  WHERE banner_id=?");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        $user_details_obj->bind_param("s",$this->banner_id);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+
+
+    public function getBannerDetailsHindi(){
+        $user_details_query=("Select banner_id,banner_title_hi as title,banner_img_hi as image,banner_desc_hi as description from gbl_banner  WHERE banner_id=?");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        $user_details_obj->bind_param("s",$this->banner_id);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+    public function getBannerDetailsEnglish(){
+        $user_details_query=("Select banner_id, banner_title as title,	banner_img as image,banner_desc as description from gbl_banner  WHERE banner_id=?");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        $user_details_obj->bind_param("s",$this->banner_id);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+
+
+
+
+
     public function getIncomeDetailsArabic(){
         $user_details_query=("Select image_ar as image,link_ar as link,text_ar as text,description_ar as description from mkt_income");
         $user_details_obj = $this->conn->prepare($user_details_query);
