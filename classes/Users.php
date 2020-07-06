@@ -380,6 +380,18 @@ class Users{
             return $units;
         }
     }
+    public function getOrderByOrderId(){
+        $query=("SELECT i.product_img,s.order_id,s.item_qty,s.price,s.old_price,s.item_name from sls_order_details as s inner join inv_item as i on s.item_id=i.item_id where order_id=?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->order_customer_id);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
     public function getAddressByCustomerId(){
         $query=("SELECT * from mkt_customer_address where customer_id=?");
         $obj = $this->conn->prepare($query);
