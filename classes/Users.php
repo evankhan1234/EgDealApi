@@ -227,9 +227,12 @@ class Users{
         return array();
     }
     public function check_customer_login(){
-        $user_query = "Select * from mkt_customer WHERE mobile_number = ? AND password = ?";
-        $usr_obj = $this->conn->prepare($user_query);
-        $usr_obj->bind_param("ss", $this->customer_mobile_number,$this->customer_password);
+
+        $email_query = "Select * from mkt_customer WHERE
+  (mobile_number = ? AND password = ?) OR
+  (email_address = ? AND password = ?)";
+        $usr_obj = $this->conn->prepare($email_query);
+        $usr_obj->bind_param("ssss", $this->customer_mobile_number,$this->customer_password,$this->customer_mobile_number,$this->customer_password);
         if($usr_obj->execute()){
             $data = $usr_obj->get_result();
             return $data->fetch_assoc();

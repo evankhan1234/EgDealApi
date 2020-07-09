@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $user_data = $user_obj->check_customer_login();
         if ($user_data != null)
         { //
-            $datas = $user_obj->customer_login();
+            $datas = $user_obj->check_customer_login();
             http_response_code(200);
             echo json_encode(array(
                 "status" => 200,
