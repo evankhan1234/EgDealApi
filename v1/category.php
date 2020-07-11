@@ -28,19 +28,23 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
     if($users){
         foreach ($users as $val) {
             $user_obj->category_id =$val['category_id'];
-            $result_array=$user_obj->getProductLByCategoryId();
+
 
             if($data->Type=="ar"){
                 $banner=$user_obj->getBannerByCategoryIdArabic();
+                $result_array=$user_obj->getProductByCategoryIdByEnglish();
             }
             else if($data->Type=="bn"){
                 $banner=$user_obj->getBannerByCategoryIdBangla();
+                $result_array=$user_obj->getProductByCategoryIdByBangla();
             }
             else if($data->Type=="hi"){
                 $banner=$user_obj->getBannerByCategoryIdHindi();
+                $result_array=$user_obj->getProductByCategoryIdByHindi();
             }
             else if($data->Type=="en"){
                 $banner=$user_obj->getBannerByCategoryIdEnglish();
+                $result_array=$user_obj->getProductByCategoryIdByArabic();
             }
             //$banner=$user_obj->getBannerByCategoryId();
             $sub_user_array[$val['category_id']]['category_id']=$val['category_id'];

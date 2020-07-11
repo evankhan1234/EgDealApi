@@ -22,19 +22,19 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
 
     // body
     $data = json_decode(file_get_contents("php://input"));
-    $user_obj->search = $data->Search;
+
 
     if($data->Type=="ar"){
-        $users=$user_obj->getSearchByArabic();
+        $users=$user_obj->getCategoryByArabic();
     }
     else if($data->Type=="bn"){
-        $users=$user_obj->getSearchByBangla();
+        $users=$user_obj->getCategoryByBangla();
     }
     else if($data->Type=="hi"){
-        $users=$user_obj->getSearchByHindi();
+        $users=$user_obj->getCategoryByHindi();
     }
     else if($data->Type=="en"){
-        $users=$user_obj->getSearchByEnglish();
+        $users=$user_obj->getCategoryByEnglish();
     }
     if($users){
 
@@ -51,8 +51,7 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
         echo json_encode(array(
 
             "status" => 200,
-            "success" => true,
-            "data" => $users,
+            "success" => false,
             "message" => "No Product Found"
         ));
     }
