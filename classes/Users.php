@@ -424,7 +424,7 @@ class Users{
         }
     }
     public function getProductByCategoryIdByBangla(){
-        $query=("SELECT item_id,item_name_bn as item_name,category_id,category_name_bn as category_name,subcategory_id,subcategory_name_bn as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc_bn as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1_bn as meta_keyword1,meta_keyword2_bn as meta_keyword2,meta_keyword3_bn as meta_keyword3,earning_point,service_id,category_ind  from inv_item where category_id=?");
+        $query=("SELECT item_id,item_name_bn as item_name,category_id,category_name_bn as category_name,subcategory_id,subcategory_name_bn as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc_bn as product_desc,product_feature_bn as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1_bn as meta_keyword1,meta_keyword2_bn as meta_keyword2,meta_keyword3_bn as meta_keyword3,earning_point,service_id,category_ind  from inv_item where category_id=?");
         $obj = $this->conn->prepare($query);
         $obj->bind_param("s",$this->category_id);
         $units=array();
@@ -436,7 +436,7 @@ class Users{
         }
     }
     public function getProductByCategoryIdByHindi(){
-        $query=("SELECT item_id,item_name_hi as item_name,category_id,category_name_hi as category_name,subcategory_id,subcategory_name_hi as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc_hi as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1_hi as meta_keyword1,meta_keyword2_hi as meta_keyword2,meta_keyword3_hi as meta_keyword3,earning_point,service_id,category_ind  from inv_item where category_id=?");
+        $query=("SELECT item_id,item_name_hi as item_name,category_id,category_name_hi as category_name,subcategory_id,subcategory_name_hi as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc_hi as product_desc,product_feature_hi as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1_hi as meta_keyword1,meta_keyword2_hi as meta_keyword2,meta_keyword3_hi as meta_keyword3,earning_point,service_id,category_ind  from inv_item where category_id=?");
         $obj = $this->conn->prepare($query);
         $obj->bind_param("s",$this->category_id);
         $units=array();
@@ -448,7 +448,7 @@ class Users{
         }
     }
     public function getProductByCategoryIdByArabic(){
-        $query=("SELECT item_id,item_name_ar as item_name,category_id,category_name_ar as category_name,subcategory_id,subcategory_name_ar as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc_ar as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1_ar as meta_keyword1,meta_keyword2_ar as meta_keyword2,meta_keyword3_ar as meta_keyword3,earning_point,service_id,category_ind  from inv_item where category_id=?");
+        $query=("SELECT item_id,item_name_ar as item_name,category_id,category_name_ar as category_name,subcategory_id,subcategory_name_ar as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc_ar as product_desc,product_feature_ar as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1_ar as meta_keyword1,meta_keyword2_ar as meta_keyword2,meta_keyword3_ar as meta_keyword3,earning_point,service_id,category_ind  from inv_item where category_id=?");
         $obj = $this->conn->prepare($query);
         $obj->bind_param("s",$this->category_id);
         $units=array();
