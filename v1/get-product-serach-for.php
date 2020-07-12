@@ -18,12 +18,24 @@ $connection = $db->connect();
 
 $user_obj = new Users($connection);
 
-if($_SERVER['REQUEST_METHOD'] === "GET"){
+if($_SERVER['REQUEST_METHOD'] === "POST"){
 
     // body
     $data = json_decode(file_get_contents("php://input"));
 
-    $users=$user_obj->getProductForSearch();
+
+    if($data->Type=="ar"){
+        $users=$user_obj->getProductForSearchByArabic();
+    }
+    else if($data->Type=="bn"){
+        $users=$user_obj->getProductForSearchByBangla();
+    }
+    else if($data->Type=="hi"){
+        $users=$user_obj->getProductForSearchByHindi();
+    }
+    else if($data->Type=="en"){
+        $users=$user_obj->getProductForSearchByEnglish();
+    }
     if($users){
 
         http_response_code(200); // ok

@@ -325,8 +325,8 @@ class Users{
         return $units;
 
     }
-    public function getSearch(){
-        $query=("Select * from inv_item where  item_name LIKE ?");
+    public function getSearchByEnglish(){
+        $query=("SELECT item_id,item_name as item_name,category_id,category_name as category_name,subcategory_id,subcategory_name as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1 as meta_keyword1,meta_keyword2 as meta_keyword2,meta_keyword3 as meta_keyword3,earning_point,service_id,category_ind  from inv_item where  item_name LIKE ?");
         $obj = $this->conn->prepare($query);
         $obj->bind_param("s",$this->search);
         $units=array();
@@ -336,19 +336,119 @@ class Users{
                 $units[]=$item;
             return $units;
         }
-
     }
-    public function getProductForSearch()
+    public function getSearchByBangla(){
+        $query=("SELECT item_id,item_name as item_name,category_id,category_name as category_name,subcategory_id,subcategory_name as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1 as meta_keyword1,meta_keyword2 as meta_keyword2,meta_keyword3 as meta_keyword3,earning_point,service_id,category_ind  from inv_item where  item_name_bn LIKE ?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->search);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
+    public function getSearchByArabic(){
+        $query=("SELECT item_id,item_name_ar as item_name,category_id,category_name_ar as category_name,subcategory_id,subcategory_name_ar as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc_ar as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1_ar as meta_keyword1,meta_keyword2_ar as meta_keyword2,meta_keyword3_ar as meta_keyword3,earning_point,service_id,category_ind  from inv_item where  item_name_ar LIKE ?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->search);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
+    public function getSearchByHindi(){
+        $query=("SELECT item_id,item_name_hi as item_name,category_id,category_name_hi as category_name,subcategory_id,subcategory_name_hi as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc_hi as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1_hi as meta_keyword1,meta_keyword2_hi as meta_keyword2,meta_keyword3_hi as meta_keyword3,earning_point,service_id,category_ind  from inv_item where  item_name_hi LIKE ?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->search);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
+    public function getProductForSearchByEnglish()
     {
-        $result = $this->conn->query("Select * from inv_item");
+        $result = $this->conn->query("SELECT item_id,item_name as item_name,category_id,category_name as category_name,subcategory_id,subcategory_name as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1 as meta_keyword1,meta_keyword2 as meta_keyword2,meta_keyword3 as meta_keyword3,earning_point,service_id,category_ind  from inv_item");
         $units = array();
         while ($item = $result->fetch_assoc())
             $units[] = $item;
         return $units;
 
     }
-    public function getProductLByCategoryId(){
-        $query=("SELECT * from inv_item where category_id=?");
+    public function getProductForSearchByBangla()
+    {
+        $result = $this->conn->query("SELECT item_id,item_name_bn as item_name,category_id,category_name_bn as category_name,subcategory_id,subcategory_name_bn as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc_bn as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1_bn as meta_keyword1,meta_keyword2_bn as meta_keyword2,meta_keyword3_bn as meta_keyword3,earning_point,service_id,category_ind  from inv_item");
+
+        $units = array();
+        while ($item = $result->fetch_assoc())
+            $units[] = $item;
+        return $units;
+
+    }
+    public function getProductForSearchByHindi()
+    {
+        $result = $this->conn->query("SELECT item_id,item_name_hi as item_name,category_id,category_name_hi as category_name,subcategory_id,subcategory_name_hi as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc_hi as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1_hi as meta_keyword1,meta_keyword2_hi as meta_keyword2,meta_keyword3_hi as meta_keyword3,earning_point,service_id,category_ind  from inv_item");
+        $units = array();
+        while ($item = $result->fetch_assoc())
+            $units[] = $item;
+        return $units;
+
+    }
+    public function getProductForSearchByArabic()
+    {
+        $result = $this->conn->query("SELECT item_id,item_name_ar as item_name,category_id,category_name_ar as category_name,subcategory_id,subcategory_name_ar as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc_ar as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1_ar as meta_keyword1,meta_keyword2_ar as meta_keyword2,meta_keyword3_ar as meta_keyword3,earning_point,service_id,category_ind  from inv_item ");
+
+        $units = array();
+        while ($item = $result->fetch_assoc())
+            $units[] = $item;
+        return $units;
+
+    }
+    public function getProductByCategoryIdByEnglish(){
+        $query=("SELECT item_id,item_name as item_name,category_id,category_name as category_name,subcategory_id,subcategory_name as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1 as meta_keyword1,meta_keyword2 as meta_keyword2,meta_keyword3 as meta_keyword3,earning_point,service_id,category_ind  from inv_item where category_id=?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->category_id);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
+    public function getProductByCategoryIdByBangla(){
+        $query=("SELECT item_id,item_name_bn as item_name,category_id,category_name_bn as category_name,subcategory_id,subcategory_name_bn as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc_bn as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1_bn as meta_keyword1,meta_keyword2_bn as meta_keyword2,meta_keyword3_bn as meta_keyword3,earning_point,service_id,category_ind  from inv_item where category_id=?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->category_id);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
+    public function getProductByCategoryIdByHindi(){
+        $query=("SELECT item_id,item_name_hi as item_name,category_id,category_name_hi as category_name,subcategory_id,subcategory_name_hi as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc_hi as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1_hi as meta_keyword1,meta_keyword2_hi as meta_keyword2,meta_keyword3_hi as meta_keyword3,earning_point,service_id,category_ind  from inv_item where category_id=?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->category_id);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
+    public function getProductByCategoryIdByArabic(){
+        $query=("SELECT item_id,item_name_ar as item_name,category_id,category_name_ar as category_name,subcategory_id,subcategory_name_ar as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc_ar as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1_ar as meta_keyword1,meta_keyword2_ar as meta_keyword2,meta_keyword3_ar as meta_keyword3,earning_point,service_id,category_ind  from inv_item where category_id=?");
         $obj = $this->conn->prepare($query);
         $obj->bind_param("s",$this->category_id);
         $units=array();
@@ -565,6 +665,94 @@ class Users{
         }
         return false;
 
+    }
+
+    public function getCategoryByArabic()
+    {
+        $result = $this->conn->query("SELECT category_id ,category_name_ar as category_name,category_img,category_img_circle  from inv_category order by display_serial");
+        $units = array();
+        while ($item = $result->fetch_assoc())
+            $units[] = $item;
+        return $units;
+
+    }
+    public function getCategoryByHindi()
+    {
+        $result = $this->conn->query("SELECT category_id ,category_name_hi as category_name,category_img,category_img_circle  from inv_category order by display_serial ");
+
+        $units = array();
+        while ($item = $result->fetch_assoc())
+            $units[] = $item;
+        return $units;
+
+    }
+    public function getCategoryByBangla()
+    {
+        $result = $this->conn->query("SELECT category_id ,category_name_bn as category_name,category_img,category_img_circle  from inv_category  order by display_serial ");
+
+        $units = array();
+        while ($item = $result->fetch_assoc())
+            $units[] = $item;
+        return $units;
+
+    }
+    public function getCategoryByEnglish()
+    {
+        $result = $this->conn->query("SELECT category_id ,category_name as category_name,category_img,category_img_circle  from inv_category order by display_serial ");
+
+        $units = array();
+        while ($item = $result->fetch_assoc())
+            $units[] = $item;
+        return $units;
+
+    }
+    public function getSubCategoryByEnglish(){
+        $query=("SELECT subcategory_id ,subcategory_name as subcategory_name ,subcategory_img from inv_subcategory where category_id=? order by display_serial");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->category_id);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
+    public function getSubCategoryByArabic(){
+        $query=("SELECT subcategory_id ,subcategory_name_ar as subcategory_name ,subcategory_img from inv_subcategory where category_id=? order by display_serial");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->category_id);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
+    public function getSubCategoryByBangla(){
+        $query=("SELECT subcategory_id ,subcategory_name_bn as subcategory_name ,subcategory_img from inv_subcategory where category_id=? order by display_serial");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->category_id);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
+    public function getSubCategoryByHindi(){
+        $query=("SELECT subcategory_id ,subcategory_name_hi as subcategory_name ,subcategory_img from inv_subcategory where category_id=? order by display_serial");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->category_id);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
     }
 }
 
