@@ -32,7 +32,7 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
 
             if($data->Type=="ar"){
                 $banner=$user_obj->getBannerByCategoryIdArabic();
-                $result_array=$user_obj->getProductByCategoryIdByEnglish();
+                $result_array=$user_obj->getProductByCategoryIdByArabic();
             }
             else if($data->Type=="bn"){
                 $banner=$user_obj->getBannerByCategoryIdBangla();
@@ -44,7 +44,7 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
             }
             else if($data->Type=="en"){
                 $banner=$user_obj->getBannerByCategoryIdEnglish();
-                $result_array=$user_obj->getProductByCategoryIdByArabic();
+                $result_array=$user_obj->getProductByCategoryIdByEnglish();
             }
             //$banner=$user_obj->getBannerByCategoryId();
             $sub_user_array[$val['category_id']]['category_id']=$val['category_id'];
