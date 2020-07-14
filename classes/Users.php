@@ -15,6 +15,7 @@ class Users{
   public $user_id;
   public $banner_id;
   public $service_id;
+  public $customer_id;
   public $category_id;
   public $service_banner;
   public $service_image;
@@ -72,7 +73,10 @@ class Users{
   public $customer_address_state_name;
   public $customer_address_country_name;
 
+  public $comments;
+  public $review;
   public $order_id;
+
   public $order_details_item_id;
   public $order_details_item_quantity;
   public $order_details_price;
@@ -200,6 +204,69 @@ class Users{
         else{
             return false;
         }
+    }
+    public function create_favorite(){
+
+        $query = "INSERT INTO  mkt_service_favorite SET service_id = ?, customer_id = ?";
+
+        $obj = $this->conn->prepare($query);
+
+        $obj->bind_param("ss", $this->service_id, $this->customer_id);
+
+        if($obj->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public function create_rating(){
+
+        $query = "INSERT INTO  mkt_service_review SET service_id = ?, customer_id = ?,comments=?,review=?";
+
+        $obj = $this->conn->prepare($query);
+
+        $obj->bind_param("ssss", $this->service_id, $this->customer_id, $this->comments, $this->review);
+
+        if($obj->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public function create_follow(){
+
+        $query = "INSERT INTO  mkt_service_follow SET service_id = ?, customer_id = ?";
+
+        $obj = $this->conn->prepare($query);
+
+        $obj->bind_param("ss", $this->service_id, $this->customer_id);
+
+        if($obj->execute()){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    public function delete_favorite(){
+        $query = "DELETE FROM mkt_service_favorite Where service_id=?";
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",  $this->service_id);
+        if($obj->execute()){
+            return true;
+        }
+        return false;
+    }
+    public function delete_follow(){
+        $query = "DELETE FROM mkt_service_follow Where service_id=?";
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",  $this->service_id);
+        if($obj->execute()){
+            return true;
+        }
+        return false;
     }
     public function create_address(){
 
@@ -753,6 +820,26 @@ class Users{
                 $units[]=$item;
             return $units;
         }
+    }
+    public function getFavorite(){
+        $user_details_query=("Select * from mkt_service_favorite  where service_id=? AND customer_id=?");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        $user_details_obj->bind_param("ss",$this->service_id,$this->customer_id);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+    public function getFollow(){
+        $user_details_query=("Select * from mkt_service_follow  where service_id=? AND customer_id=?");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        $user_details_obj->bind_param("ss",$this->service_id,$this->customer_id);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
     }
 }
 
