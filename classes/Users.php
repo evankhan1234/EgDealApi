@@ -2,6 +2,9 @@
 
 class Users{
   // define properties
+  public $reset_mobile_number;
+  public $reset_code;
+  public $reset_password;
   public $owner_name;
   public $owner_phone;
   public $type;
@@ -396,6 +399,30 @@ class Users{
         $query=("SELECT item_id,item_name as item_name,category_id,category_name as category_name,subcategory_id,subcategory_name as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1 as meta_keyword1,meta_keyword2 as meta_keyword2,meta_keyword3 as meta_keyword3,earning_point,service_id,category_ind  from inv_item where  item_name LIKE ?");
         $obj = $this->conn->prepare($query);
         $obj->bind_param("s",$this->search);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
+    public function getFavoriteServiceList(){
+        $query=("SELECT s.service_name,s.service_banner FROM mkt_service_favorite AS mk INNER JOIN mkt_service AS s ON mk.service_id=s.service_id WHERE  mk.customer_id=?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->customer_id);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
+    public function getCommentList(){
+        $query=("SELECT c.customer_name,mk.comments,mk.review FROM mkt_service_review AS mk INNER JOIN mkt_customer AS c ON mk.customer_id=c.customer_id WHERE  mk.customer_id=?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->customer_id);
         $units=array();
         if($obj->execute()){
             $data = $obj->get_result();
@@ -841,6 +868,27 @@ class Users{
         }
         return NULL;
     }
+    public function getMobileNumber(){
+        $user_details_query=("Select * from mkt_service  where contact_number=?");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        $user_details_obj->bind_param("s",$this->customer_mobile_number);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+
+      public function update_reset_password_service()
+      {
+          $delivery_query = "UPDATE mkt_service SET password=? Where contact_number=?";
+          $delivery_obj = $this->conn->prepare($delivery_query);
+          $delivery_obj->bind_param("ss", $this->reset_password, $this->reset_mobile_number);
+          if ($delivery_obj->execute()) {
+              return true;
+          }
+          return false;
+      }
 }
 
  ?>
