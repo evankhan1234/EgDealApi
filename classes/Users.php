@@ -17,12 +17,16 @@ class Users{
   public $created;
   public $user_id;
   public $banner_id;
+  public $item_id;
   public $service_id;
   public $customer_id;
   public $category_id;
+  public $category_name;
   public $service_banner;
   public $service_image;
   public $service_type;
+  public $service_country;
+  public $service_city;
   public $service_owner_name;
   public $service_contact_number;
   public $service_details;
@@ -195,11 +199,11 @@ class Users{
     }
     public function create_product(){
 
-        $query = "INSERT INTO  inv_item SET item_name = ?, price = ?, product_desc = ?, product_img1 =?, product_img2 =?,product_img3 =?,product_img4=?, service_id=?";
+        $query = "INSERT INTO  inv_item SET item_name = ?, price = ?, product_desc = ?, product_img1 =?, product_img2 =?,product_img3 =?,product_img4=?, service_id=?,category_id=?,category_name=?";
 
         $obj = $this->conn->prepare($query);
 
-        $obj->bind_param("ssssssss", $this->product_name, $this->product_price,$this->product_description, $this->product_image1, $this->product_image2, $this->product_image3, $this->product_image4, $this->service_id);
+        $obj->bind_param("ssssssssss", $this->product_name, $this->product_price,$this->product_description, $this->product_image1, $this->product_image2, $this->product_image3, $this->product_image4, $this->service_id, $this->category_id, $this->category_name);
 
         if($obj->execute()){
             return true;
@@ -252,6 +256,15 @@ class Users{
         else{
             return false;
         }
+    }
+    public function delete_product(){
+        $purchase_delete_type_query = "DELETE FROM inv_item  Where item_id=? and service_id=? ";
+        $purchase_delete_type_obj = $this->conn->prepare($purchase_delete_type_query);
+        $purchase_delete_type_obj->bind_param("ss",  $this->item_id, $this->service_id);
+        if($purchase_delete_type_obj->execute()){
+            return true;
+        }
+        return false;
     }
     public function delete_favorite(){
         $query = "DELETE FROM mkt_service_favorite Where service_id=?";
@@ -643,7 +656,7 @@ class Users{
         return NULL;
     }
     public function getProductList(){
-        $query=("SELECT item_name,price,product_desc,product_img1,product_img2,product_img3,product_img4 from inv_item where service_id=?");
+        $query=("SELECT item_id,item_name,price,product_desc,product_img1,product_img2,product_img3,product_img4,service_id from inv_item where service_id=?");
         $obj = $this->conn->prepare($query);
         $obj->bind_param("s",$this->service_id);
         $units=array();
@@ -761,6 +774,17 @@ class Users{
 
     }
 
+    public function update_service_map(){
+        $delivery_query = "UPDATE mkt_service SET latitude=?,longitude=?,Country=?,City=? Where service_id=?  ";
+        $delivery_obj = $this->conn->prepare($delivery_query);
+        $delivery_obj->bind_param("sssss", $this->latitude, $this->longitude, $this->service_country, $this->service_city,  $this->service_id);
+        if($delivery_obj->execute()){
+            return true;
+        }
+        return false;
+
+    }
+
     public function getCategoryByArabic()
     {
         $result = $this->conn->query("SELECT category_id ,category_name_ar as category_name,category_img,category_img_circle  from inv_category order by display_serial");
@@ -862,6 +886,17 @@ class Users{
         $user_details_query=("Select * from mkt_service_follow  where service_id=? AND customer_id=?");
         $user_details_obj = $this->conn->prepare($user_details_query);
         $user_details_obj->bind_param("ss",$this->service_id,$this->customer_id);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+
+    public function getServiceDetails(){
+        $user_details_query=("Select * from mkt_service  where service_id=?");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        $user_details_obj->bind_param("s",$this->service_id);
         if($user_details_obj->execute()){
             $data = $user_details_obj->get_result();
             return $data->fetch_assoc();

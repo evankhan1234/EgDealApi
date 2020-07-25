@@ -25,30 +25,22 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
 
 
 
-    if(!empty($data->ProductName) && !empty($data->Description)){
+    if(!empty($data->ServiceId) && !empty($data->ItemId)){
 
 
 
-        $user_obj->product_name = $data->ProductName;
-        $user_obj->product_price = $data->Price;
-        $user_obj->product_description = $data->Description;
-        $user_obj->product_image1 = $data->Image1;
-        $user_obj->product_image2 = $data->Image2;
-        $user_obj->product_image3 = $data->Image3;
-        $user_obj->product_image4 = $data->Image4;
+
+        $user_obj->item_id = $data->ItemId;
         $user_obj->service_id = $data->ServiceId;
-        $user_obj->category_id = $data->CategoryId;
-        $user_obj->category_name = $data->CategoryName;
 
 
-
-        if ($user_obj->create_product()) {
+        if ($user_obj->delete_product()) {
 
             http_response_code(200);
             echo json_encode(array(
                 "status" => 200,
                 "success" => true,
-                "message" => "Product has been created"
+                "message" => "Product  has been deleted"
 
             ));
         } else {
@@ -57,7 +49,7 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
             echo json_encode(array(
                 "status" => 500,
                 "success" => false,
-                "message" => "Failed to save Product"
+                "message" => "Failed to save deleted"
             ));
         }
 
