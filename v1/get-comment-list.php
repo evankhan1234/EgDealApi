@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
     // body
     $data = json_decode(file_get_contents("php://input"));
-    $user_obj->customer_id = $data->CustomerId;
+    $user_obj->service_id = $data->ServiceId;
 
     $users = $user_obj->getCommentList();
 

@@ -433,9 +433,9 @@ class Users{
         }
     }
     public function getCommentList(){
-        $query=("SELECT c.customer_name,mk.comments,mk.review FROM mkt_service_review AS mk INNER JOIN mkt_customer AS c ON mk.customer_id=c.customer_id WHERE  mk.customer_id=?");
+        $query=("SELECT c.customer_name,mk.comments,mk.review FROM mkt_service_review AS mk INNER JOIN mkt_customer AS c ON mk.customer_id=c.customer_id WHERE  mk.service_id=?");
         $obj = $this->conn->prepare($query);
-        $obj->bind_param("s",$this->customer_id);
+        $obj->bind_param("s",$this->service_id);
         $units=array();
         if($obj->execute()){
             $data = $obj->get_result();
