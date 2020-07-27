@@ -667,6 +667,60 @@ class Users{
             return $units;
         }
     }
+
+    public function getProductListByHindiBannerId(){
+        $query=("SELECT  inv.item_id, inv.item_name_hi as item_name, inv.category_id, inv.category_name_hi as category_name, inv.subcategory_id, inv.subcategory_name_hi as subcategory_name, inv.vendor_id, inv.vendor_name, inv.price, inv.old_price, inv.size_dtl, inv.color_dtl,inv.product_code,inv.product_desc_hi as product_desc,inv.product_feature_hi as product_feature,inv.product_img,inv.product_img1,inv.product_img2,inv.product_img3,inv.product_img4,inv.active_ind,inv.rating,inv.featured_ind,inv.package_ind,inv.home_ind,inv.display_serial,inv.popular_ind,inv.meta_keyword1_hi as meta_keyword1,inv.meta_keyword2_hi as meta_keyword2,inv.meta_keyword3_hi as meta_keyword3,inv.earning_point,inv.service_id,inv.category_ind FROM inv_banner_related_item AS  rel INNER JOIN gbl_banner AS ban ON rel.banner_id = ban.banner_id 
+INNER JOIN inv_item inv ON rel.item_id = inv.item_id WHERE rel.banner_id=?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->banner_id);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
+    public function getProductListByEnglishBannerId(){
+        $query=("SELECT  inv.item_id, inv.item_name as item_name, inv.category_id, inv.category_name as category_name, inv.subcategory_id, inv.subcategory_name as subcategory_name, inv.vendor_id, inv.vendor_name, inv.price, inv.old_price, inv.size_dtl, inv.color_dtl,inv.product_code,inv.product_desc as product_desc,inv.product_feature as product_feature,inv.product_img,inv.product_img1,inv.product_img2,inv.product_img3,inv.product_img4,inv.active_ind,inv.rating,inv.featured_ind,inv.package_ind,inv.home_ind,inv.display_serial,inv.popular_ind,inv.meta_keyword1 as meta_keyword1,inv.meta_keyword2 as meta_keyword2,inv.meta_keyword3 as meta_keyword3,inv.earning_point,inv.service_id,inv.category_ind FROM inv_banner_related_item AS  rel INNER JOIN gbl_banner AS ban ON rel.banner_id = ban.banner_id 
+INNER JOIN inv_item inv ON rel.item_id = inv.item_id WHERE rel.banner_id=?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->banner_id);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
+
+    public function getProductListByBanglaBannerId(){
+        $query=("SELECT  inv.item_id, inv.item_name_bn as item_name, inv.category_id, inv.category_name_bn as category_name, inv.subcategory_id, inv.subcategory_name_bn as subcategory_name, inv.vendor_id, inv.vendor_name, inv.price, inv.old_price, inv.size_dtl, inv.color_dtl,inv.product_code,inv.product_desc_bn as product_desc,inv.product_feature_bn as product_feature,inv.product_img,inv.product_img1,inv.product_img2,inv.product_img3,inv.product_img4,inv.active_ind,inv.rating,inv.featured_ind,inv.package_ind,inv.home_ind,inv.display_serial,inv.popular_ind,inv.meta_keyword1_bn as meta_keyword1,inv.meta_keyword2_bn as meta_keyword2,inv.meta_keyword3_bn as meta_keyword3,inv.earning_point,inv.service_id,inv.category_ind FROM inv_banner_related_item AS  rel INNER JOIN gbl_banner AS ban ON rel.banner_id = ban.banner_id 
+INNER JOIN inv_item inv ON rel.item_id = inv.item_id WHERE rel.banner_id=?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->banner_id);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
+    public function getProductListByArabicBannerId(){
+        $query=("SELECT  inv.item_id, inv.item_name_ar as item_name, inv.category_id, inv.category_name_ar as category_name, inv.subcategory_id, inv.subcategory_name_ar as subcategory_name, inv.vendor_id, inv.vendor_name, inv.price, inv.old_price, inv.size_dtl, inv.color_dtl,inv.product_code,inv.product_desc_ar as product_desc,inv.product_feature_ar as product_feature,inv.product_img,inv.product_img1,inv.product_img2,inv.product_img3,inv.product_img4,inv.active_ind,inv.rating,inv.featured_ind,inv.package_ind,inv.home_ind,inv.display_serial,inv.popular_ind,inv.meta_keyword1_ar as meta_keyword1,inv.meta_keyword2_ar as meta_keyword2,inv.meta_keyword3_ar as meta_keyword3,inv.earning_point,inv.service_id,inv.category_ind FROM inv_banner_related_item AS  rel INNER JOIN gbl_banner AS ban ON rel.banner_id = ban.banner_id 
+INNER JOIN inv_item inv ON rel.item_id = inv.item_id WHERE rel.banner_id=?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->banner_id);
+        $units=array();
+        if($obj->execute()){
+            $data = $obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
     public function getCustomerUserInformation(){
         $user_details_query=("Select * from mkt_service where service_id=?");
         $user_details_obj = $this->conn->prepare($user_details_query);
