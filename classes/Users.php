@@ -790,6 +790,27 @@ INNER JOIN inv_item inv ON rel.item_id = inv.item_id WHERE rel.banner_id=?");
         }
         return NULL;
     }
+
+    public function getItemSize(){
+        $user_details_query=("Select * from inv_item_size where item_id=?");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        $user_details_obj->bind_param("s",$this->item_id);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+    public function getItemColor(){
+        $user_details_query=("Select * from inv_item_color where item_id=?");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        $user_details_obj->bind_param("s",$this->item_id);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
     public function getIncomeDetailsBengali(){
     $user_details_query=("Select image_bn as image,link_bn as link,text_bn as text,description_bn as description from mkt_income");
     $user_details_obj = $this->conn->prepare($user_details_query);
