@@ -67,6 +67,8 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
                 $user_obj->order_details_item_name = $val->ItemName;
                 $user_obj->order_details_category_name = $val->CategoryName;
                 $user_obj->order_details_sub_category_name = $val->SubCategoryName;
+                $user_obj->order_details_color = $val->Color;
+                $user_obj->order_details_size = $val->Size;
                 if($user_obj->create_order_details()){
                 }
             }
