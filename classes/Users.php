@@ -43,6 +43,7 @@ class Users{
   public $sub_category_id;
   public $income_type;
   public $customer_name;
+  public $customer_image;
   public $customer_email;
   public $customer_android;
   public $customer_password;
@@ -93,6 +94,8 @@ class Users{
   public $order_details_item_name;
   public $order_details_category_name;
   public $order_details_sub_category_name;
+  public $order_details_color;
+  public $order_details_size;
 
   private $conn;
 
@@ -154,11 +157,11 @@ class Users{
     }
     public function create_order_details(){
 
-        $product_querys = "INSERT INTO sls_order_details SET order_id = ?, item_id = ?, item_qty = ?, price =?, old_price =?,amount =?,product_code =?, item_name =?, category_name=?,subcategory_name=?";
+        $product_querys = "INSERT INTO sls_order_details SET order_id = ?, item_id = ?, item_qty = ?, price =?, old_price =?,amount =?,product_code =?, item_name =?, category_name=?,subcategory_name=?,item_color=?,item_size=?";
 
         $product_objs = $this->conn->prepare($product_querys);
 
-        $product_objs->bind_param("ssssssssss", $this->order_id, $this->order_details_item_id,$this->order_details_item_quantity, $this->order_details_price, $this->order_details_old_price, $this->order_details_amount, $this->order_details_product_code, $this->order_details_item_name, $this->order_details_category_name, $this->order_details_sub_category_name);
+        $product_objs->bind_param("ssssssssssss", $this->order_id, $this->order_details_item_id,$this->order_details_item_quantity, $this->order_details_price, $this->order_details_old_price, $this->order_details_amount, $this->order_details_product_code, $this->order_details_item_name, $this->order_details_category_name, $this->order_details_sub_category_name, $this->order_details_color, $this->order_details_size);
 
         if($product_objs->execute()){
             return true;
@@ -635,6 +638,42 @@ class Users{
         }
         return NULL;
     }
+    public function getInfoEnPolicy(){
+        $user_details_query=("Select info_policy as info_policy from gbl_setting");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+    public function getInfoArPolicy(){
+        $user_details_query=("Select info_policy_ar as info_policy from gbl_setting");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+    public function getInfoBnPolicy(){
+        $user_details_query=("Select info_policy_bn as info_policy from gbl_setting");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
+    public function getInfoHiPolicy(){
+        $user_details_query=("Select info_policyhi as info_policy from gbl_setting");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
     public function getBannerByCategoryIdHindi(){
         $user_details_query=("Select banner_id,banner_title_hi as title,banner_img_hi as image,banner_desc_hi as description from gbl_banner  where category_id=?");
         $user_details_obj = $this->conn->prepare($user_details_query);
@@ -721,6 +760,7 @@ INNER JOIN inv_item inv ON rel.item_id = inv.item_id WHERE rel.banner_id=?");
             return $units;
         }
     }
+
     public function getCustomerUserInformation(){
         $user_details_query=("Select * from mkt_service where service_id=?");
         $user_details_obj = $this->conn->prepare($user_details_query);
@@ -732,7 +772,16 @@ INNER JOIN inv_item inv ON rel.item_id = inv.item_id WHERE rel.banner_id=?");
         return NULL;
     }
 
-
+    public function getMKTCustomerUserInformationFor(){
+        $user_details_query=("Select * from mkt_customer where customer_id=?");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        $user_details_obj->bind_param("s",$this->customer_id);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
     public function getBannerDetailsArabic(){
         $user_details_query=("Select banner_id,banner_title_ar as title,banner_img_ar as image,banner_desc_ar as description from gbl_banner WHERE banner_id=?");
         $user_details_obj = $this->conn->prepare($user_details_query);
@@ -842,6 +891,16 @@ INNER JOIN inv_item inv ON rel.item_id = inv.item_id WHERE rel.banner_id=?");
         $delivery_query = "UPDATE mkt_service SET service_banner=?,service_image=?,owner_name=?,type=?,contact_number=?,service_name=?,service_dialog=?,service_details=? Where service_id=?  ";
         $delivery_obj = $this->conn->prepare($delivery_query);
         $delivery_obj->bind_param("sssssssss", $this->service_banner, $this->service_image, $this->service_owner_name, $this->service_type, $this->service_contact_number, $this->service_name, $this->service_dialog, $this->service_details, $this->service_id);
+        if($delivery_obj->execute()){
+            return true;
+        }
+        return false;
+
+    }
+    public function update_customer(){
+        $delivery_query = "UPDATE mkt_customer SET customer_name=?,customer_img=?,email_address=?,mobile_number=? Where customer_id=?";
+        $delivery_obj = $this->conn->prepare($delivery_query);
+        $delivery_obj->bind_param("sssss", $this->customer_name, $this->customer_image, $this->customer_email, $this->customer_mobile_number, $this->customer_id);
         if($delivery_obj->execute()){
             return true;
         }
@@ -988,7 +1047,16 @@ INNER JOIN inv_item inv ON rel.item_id = inv.item_id WHERE rel.banner_id=?");
         }
         return NULL;
     }
-
+    public function getCustomerMobileNumber(){
+        $user_details_query=("Select * from mkt_customer  where mobile_number=?");
+        $user_details_obj = $this->conn->prepare($user_details_query);
+        $user_details_obj->bind_param("s",$this->customer_mobile_number);
+        if($user_details_obj->execute()){
+            $data = $user_details_obj->get_result();
+            return $data->fetch_assoc();
+        }
+        return NULL;
+    }
       public function update_reset_password_service()
       {
           $delivery_query = "UPDATE mkt_service SET password=? Where contact_number=?";
@@ -999,6 +1067,16 @@ INNER JOIN inv_item inv ON rel.item_id = inv.item_id WHERE rel.banner_id=?");
           }
           return false;
       }
+    public function update_reset_password_customer()
+    {
+        $delivery_query = "UPDATE mkt_customer SET password=? Where mobile_number=?";
+        $delivery_obj = $this->conn->prepare($delivery_query);
+        $delivery_obj->bind_param("ss", $this->reset_password, $this->reset_mobile_number);
+        if ($delivery_obj->execute()) {
+            return true;
+        }
+        return false;
+    }
 }
 
  ?>
