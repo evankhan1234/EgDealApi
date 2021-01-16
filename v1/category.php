@@ -21,6 +21,9 @@ $user_obj = new Users($connection);
 if($_SERVER['REQUEST_METHOD'] === "POST"){
     $data = json_decode(file_get_contents("php://input"));
     $user_obj->income_type = $data->Type;
+    $user_obj->limit = $data->limit;
+    $user_obj->page = $data->page;
+
     $users=$user_obj->getCategory();
     $result_array = array();
     $sub_user_array = array();
