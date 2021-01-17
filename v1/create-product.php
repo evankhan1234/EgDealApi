@@ -40,6 +40,7 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
         $user_obj->service_id = $data->ServiceId;
         $user_obj->category_id = $data->CategoryId;
         $user_obj->category_name = $data->CategoryName;
+        $user_obj->sub_category_id = $data->SubCategoryId;
 
 
 

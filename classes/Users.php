@@ -54,7 +54,8 @@ class Users
     public $help_mobile;
     public $help_subject;
     public $help_comments;
-
+    public $limit;
+    public $page;
     public $order_number;
     public $order_date;
     public $order_amount;
@@ -220,11 +221,11 @@ class Users
     public function create_product()
     {
 
-        $query = "INSERT INTO  inv_item SET item_name = ?,product_code = ?, price = ?, product_desc = ?, product_img1 =?, product_img2 =?,product_img3 =?,product_img4=?, service_id=?,category_id=?,category_name=?";
+        $query = "INSERT INTO  inv_item SET item_name = ?,product_code = ?, price = ?, product_desc = ?, product_img1 =?, product_img2 =?,product_img3 =?,product_img4=?, service_id=?,category_id=?,category_name=?,subcategory_id=?";
 
         $obj = $this->conn->prepare($query);
 
-        $obj->bind_param("sssssssssss", $this->product_name,$this->product_code, $this->product_price, $this->product_description, $this->product_image1, $this->product_image2, $this->product_image3, $this->product_image4, $this->service_id, $this->category_id, $this->category_name);
+        $obj->bind_param("ssssssssssss", $this->product_name,$this->product_code, $this->product_price, $this->product_description, $this->product_image1, $this->product_image2, $this->product_image3, $this->product_image4, $this->service_id, $this->category_id, $this->category_name, $this->sub_category_id);
 
         if ($obj->execute()) {
             return true;
@@ -465,12 +466,18 @@ class Users
 
     public function getCategory()
     {
-        $result = $this->conn->query("Select category_id,category_name from inv_category");
+        $query = ("Select category_id,category_name from inv_category ORDER BY category_id  LIMIT? OFFSET?");
+        $obj = $this->conn->prepare($query);
+        $page=$this->page-1;
+        $offset_page=$this->limit*$page;
+        $obj->bind_param("ss",$this->limit,$offset_page);
         $units = array();
-        while ($item = $result->fetch_assoc())
-            $units[] = $item;
-        return $units;
-
+        if ($obj->execute()) {
+            $data = $obj->get_result();
+            while ($item = $data->fetch_assoc())
+                $units[] = $item;
+            return $units;
+        }
     }
 
     public function getSearchByEnglish()
@@ -603,6 +610,8 @@ class Users
     {
         $query = ("SELECT item_id,item_name as item_name,category_id,category_name as category_name,subcategory_id,subcategory_name as subcategory_name,vendor_id,vendor_name,price,old_price,size_dtl,color_dtl,product_code,product_desc as product_desc,product_feature as product_feature,product_img,product_img1,product_img2,product_img3,product_img4,active_ind,rating,featured_ind,package_ind,home_ind,display_serial,popular_ind,meta_keyword1 as meta_keyword1,meta_keyword2 as meta_keyword2,meta_keyword3 as meta_keyword3,earning_point,service_id,category_ind  from inv_item where category_id=?");
         $obj = $this->conn->prepare($query);
+        $page=$this->page-1;
+        $offset_page=$this->limit*$page;
         $obj->bind_param("s", $this->category_id);
         $units = array();
         if ($obj->execute()) {
