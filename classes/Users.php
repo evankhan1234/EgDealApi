@@ -221,11 +221,11 @@ class Users
     public function create_product()
     {
 
-        $query = "INSERT INTO  inv_item SET item_name = ?,product_code = ?, price = ?, product_desc = ?, product_img1 =?, product_img2 =?,product_img3 =?,product_img4=?, service_id=?,category_id=?,category_name=?,subcategory_id=?";
+        $query = "INSERT INTO  inv_item SET item_name = ?,product_code = ?, price = ?, product_desc = ?, product_img =?, product_img1 =?, product_img2 =?,product_img3 =?,product_img4=?, service_id=?,category_id=?,category_name=?,subcategory_id=?";
 
         $obj = $this->conn->prepare($query);
 
-        $obj->bind_param("ssssssssssss", $this->product_name,$this->product_code, $this->product_price, $this->product_description, $this->product_image1, $this->product_image2, $this->product_image3, $this->product_image4, $this->service_id, $this->category_id, $this->category_name, $this->sub_category_id);
+        $obj->bind_param("sssssssssssss", $this->product_name,$this->product_code, $this->product_price, $this->product_description, $this->product_image1, $this->product_image1, $this->product_image2, $this->product_image3, $this->product_image4, $this->service_id, $this->category_id, $this->category_name, $this->sub_category_id);
 
         if ($obj->execute()) {
             return true;
