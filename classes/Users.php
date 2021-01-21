@@ -88,6 +88,16 @@ class Users
     public $customer_address_city_name;
     public $customer_address_state_name;
     public $customer_address_country_name;
+    public $post_id;
+    public $post_content;
+    public $post_image;
+    public $post_picture;
+    public $post_name;
+    public $post_created;
+    public $post_type;
+    public $post_status;
+    public $post_love;
+    public $post_user_id;
 
     public $comments;
     public $review;
@@ -812,7 +822,33 @@ class Users
         }
         return NULL;
     }
+    public function create_post(){
+        $post_query = "INSERT into post SET Content=?, Picture=?, Created=?, Status = ?,Love=?, Type = ?,UserId=?, Name = ?,Image = ? ";
+        $post_obj = $this->conn->prepare($post_query);
+        $post_obj->bind_param("sssssssss", $this->post_content, $this->post_picture, $this->post_created, $this->post_status, $this->post_love, $this->post_type, $this->post_user_id, $this->post_name, $this->post_image);
+        if($post_obj->execute()){
+            return true;
+        }
+        return false;
+    }
+    public function getPostPagination(){
+        $posts_query=("SELECT p.Type,p.Id, p.Name,p.Image,p.UserId,p.Content AS Content,p.Picture AS Picture,p.Created AS Created ,p.Love AS Love 
+,(CASE WHEN l.UserForId >0 THEN 'true' ELSE 'false' END) AS value FROM post AS p 
+LEFT JOIN (SELECT * FROM love WHERE UserForId =? AND Type=? ) AS l ON p.Id = l.PostId where p.Status=1 ORDER BY p.Created DESC LIMIT? OFFSET?");
+        $posts_query_obj = $this->conn->prepare($posts_query);
+        $page=$this->page-1;
+        $offset_page=$this->limit*$page;
+        $posts_query_obj->bind_param("ssss",$this->user_id,$this->type,$this->limit,$offset_page);
+        $units=array();
+        if($posts_query_obj->execute()){
+            $data = $posts_query_obj->get_result();
 
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+
+    }
     public function getInfoArPolicy()
     {
         $user_details_query = ("Select info_policy_ar as info_policy from gbl_setting");
