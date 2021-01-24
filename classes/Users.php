@@ -849,6 +849,63 @@ LEFT JOIN (SELECT * FROM love WHERE UserForId =? AND Type=? ) AS l ON p.Id = l.P
         }
 
     }
+    public function getOwnPostPagination(){
+        $posts_query=("SELECT Id,Type,Name,Image,UserId,Content,Picture,Created,Love FROM post WHERE TYPE=? AND UserId=? ORDER BY Created DESC LIMIT? OFFSET?");
+        $posts_query_obj = $this->conn->prepare($posts_query);
+        $page=$this->page-1;
+        $offset_page=$this->limit*$page;
+        $posts_query_obj->bind_param("ssss",$this->type,$this->user_id,$this->limit,$offset_page);
+        $units=array();
+        if($posts_query_obj->execute()){
+            $data = $posts_query_obj->get_result();
+
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+
+    }
+    public function update_own_post(){
+
+        $post_update_type_query=("UPDATE post SET Name = ?, Image = ?, Content = ?, Picture =? where Type=? and UserId=? and Id=?");
+
+        $post_update_type_obj = $this->conn->prepare($post_update_type_query);
+
+        $post_update_type_obj->bind_param("sssssss", $this->post_name, $this->post_image,$this->post_content, $this->post_picture, $this->post_type, $this->post_user_id, $this->post_id);
+
+        if($post_update_type_obj->execute()){
+            return true;
+        }
+        return false;
+
+    }
+    public function delete_love(){
+        $product_delete_type_query = "DELETE FROM love  Where PostId=? and UserForId=? and Type=? ";
+        $product_delete_type_obj = $this->conn->prepare($product_delete_type_query);
+        $product_delete_type_obj->bind_param("sss",  $this->post_id, $this->post_user_id, $this->post_type);
+        if($product_delete_type_obj->execute()){
+            return true;
+        }
+        return false;
+    }
+    public function create_love(){
+        $love_query = "INSERT into love SET PostId=?, UserForId=?, Type=?";
+        $love_obj = $this->conn->prepare($love_query);
+        $love_obj->bind_param("sss", $this->post_id, $this->post_user_id, $this->post_type);
+        if($love_obj->execute()){
+            return true;
+        }
+        return false;
+    }
+    public function update_like_count(){
+        $post_query = "UPDATE post SET Love =? Where Id=?";
+        $post_obj = $this->conn->prepare($post_query);
+        $post_obj->bind_param("ss", $this->post_love, $this->post_id);
+        if($post_obj->execute()){
+            return true;
+        }
+        return false;
+    }
     public function getInfoArPolicy()
     {
         $user_details_query = ("Select info_policy_ar as info_policy from gbl_setting");
