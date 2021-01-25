@@ -98,7 +98,23 @@ class Users
     public $post_status;
     public $post_love;
     public $post_user_id;
-
+    public $comments_id;
+    public $comments_post_id;
+    public $comments_user_id;
+    public $comments_type;
+    public $comments_name;
+    public $comments_image;
+    public $comments_status;
+    public $comments_love;
+    public $comments_created;
+    public $comments_content;
+    public $reply_content;
+    public $reply_created;
+    public $reply_status;
+    public $reply_image;
+    public $reply_name;
+    public $reply_type;
+    public $reply_comments_id;
     public $comments;
     public $review;
     public $order_id;
@@ -849,6 +865,27 @@ LEFT JOIN (SELECT * FROM love WHERE UserForId =? AND Type=? ) AS l ON p.Id = l.P
         }
 
     }
+    public function create_reply(){
+        $reply_query = "INSERT into reply SET Content=?,  Created=?, Status = ?, Type = ?,Username = ?,UserImage = ?,CommentsId = ? ";
+        $reply_obj = $this->conn->prepare($reply_query);
+        $reply_obj->bind_param("sssssss", $this->reply_content, $this->reply_created, $this->reply_status, $this->reply_type, $this->reply_name, $this->reply_image, $this->reply_comments_id);
+        if($reply_obj->execute()){
+            return true;
+        }
+        return false;
+    }
+    public function getReplyList(){
+        $reply_query=("SELECT * from reply where CommentsId=?");
+        $reply_query_obj = $this->conn->prepare($reply_query);
+        $reply_query_obj->bind_param("s",$this->reply_comments_id);
+        $units=array();
+        if($reply_query_obj->execute()){
+            $data = $reply_query_obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
+    }
     public function getOwnPostPagination(){
         $posts_query=("SELECT Id,Type,Name,Image,UserId,Content,Picture,Created,Love FROM post WHERE TYPE=? AND UserId=? ORDER BY Created DESC LIMIT? OFFSET?");
         $posts_query_obj = $this->conn->prepare($posts_query);
@@ -864,6 +901,48 @@ LEFT JOIN (SELECT * FROM love WHERE UserForId =? AND Type=? ) AS l ON p.Id = l.P
             return $units;
         }
 
+    }
+    public function update_comments_like_count(){
+        $post_query = "UPDATE comments SET Love =? Where Id=?";
+        $post_obj = $this->conn->prepare($post_query);
+        $post_obj->bind_param("ss", $this->comments_love, $this->comments_id);
+        if($post_obj->execute()){
+            return true;
+        }
+        return false;
+    }
+    public function delete_like(){
+        $delete_type_query = "DELETE FROM likes  Where PostId=? and UserForId=? and Type=? ";
+        $delete_type_obj = $this->conn->prepare($delete_type_query);
+        $delete_type_obj->bind_param("sss",  $this->comments_post_id, $this->comments_user_id, $this->comments_type);
+        if($delete_type_obj->execute()){
+            return true;
+        }
+        return false;
+    }
+    public function create_like(){
+        $like_query = "INSERT into likes SET PostId=?, UserForId=?, Type=?";
+        $like_obj = $this->conn->prepare($like_query);
+        $like_obj->bind_param("sss", $this->comments_post_id, $this->comments_user_id, $this->comments_type);
+        if($like_obj->execute()){
+            return true;
+        }
+        return false;
+    }
+    public function getCommentsList(){
+        $comments_query=("SELECT c.Id,c.Type, c.Content,c.UserImage,c.UserName,c.Created,c.Love
+,(CASE WHEN l.UserForId >0 THEN 'true' ELSE 'false' END) AS IsValue FROM comments AS c 
+LEFT JOIN (SELECT * FROM likes WHERE UserForId =? AND TYPE=?) 
+AS l ON c.Id = l.PostId WHERE c.PostId=? ORDER BY c.Created ");
+        $comments_query_obj = $this->conn->prepare($comments_query);
+        $comments_query_obj->bind_param("sss",$this->comments_user_id,$this->comments_type,$this->comments_post_id);
+        $units=array();
+        if($comments_query_obj->execute()){
+            $data = $comments_query_obj->get_result();
+            while ($item=$data->fetch_assoc())
+                $units[]=$item;
+            return $units;
+        }
     }
     public function update_own_post(){
 
@@ -884,6 +963,15 @@ LEFT JOIN (SELECT * FROM love WHERE UserForId =? AND Type=? ) AS l ON p.Id = l.P
         $product_delete_type_obj = $this->conn->prepare($product_delete_type_query);
         $product_delete_type_obj->bind_param("sss",  $this->post_id, $this->post_user_id, $this->post_type);
         if($product_delete_type_obj->execute()){
+            return true;
+        }
+        return false;
+    }
+    public function create_comments(){
+        $comments_query = "INSERT into comments SET Content=?,  Created=?, Status = ?,Love=?, Type = ?,UserId=?, Username = ?,UserImage = ?,PostId = ? ";
+        $comments_obj = $this->conn->prepare($comments_query);
+        $comments_obj->bind_param("sssssssss", $this->comments_content, $this->comments_created, $this->comments_status, $this->comments_love, $this->comments_type, $this->comments_user_id, $this->comments_name, $this->comments_image, $this->comments_post_id);
+        if($comments_obj->execute()){
             return true;
         }
         return false;
