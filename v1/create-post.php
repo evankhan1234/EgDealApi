@@ -40,6 +40,7 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
             $user_obj->post_picture = $data->Picture;
             $user_obj->post_image= $data->Image;
             $user_obj->post_love = $data->Love;
+            $user_obj->post_country = $data->Country;
 
             if($user_obj->create_post()){
 

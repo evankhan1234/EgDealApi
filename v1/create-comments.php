@@ -39,7 +39,7 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
             $user_obj->comments_name= $data->Name;
             $user_obj->comments_love = $data->Love;
             $user_obj->comments_status = $data->Status;
-
+            $user_obj->comments_country = $data->Country;
             if($user_obj->create_comments()){
 
                 http_response_code(200); // ok

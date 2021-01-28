@@ -97,6 +97,7 @@ class Users
     public $post_type;
     public $post_status;
     public $post_love;
+    public $post_country;
     public $post_user_id;
     public $comments_id;
     public $comments_post_id;
@@ -105,12 +106,14 @@ class Users
     public $comments_name;
     public $comments_image;
     public $comments_status;
+    public $comments_country;
     public $comments_love;
     public $comments_created;
     public $comments_content;
     public $reply_content;
     public $reply_created;
     public $reply_status;
+    public $reply_country;
     public $reply_image;
     public $reply_name;
     public $reply_type;
@@ -839,16 +842,16 @@ class Users
         return NULL;
     }
     public function create_post(){
-        $post_query = "INSERT into post SET Content=?, Picture=?, Created=?, Status = ?,Love=?, Type = ?,UserId=?, Name = ?,Image = ? ";
+        $post_query = "INSERT into post SET Content=?, Picture=?, Created=?, Status = ?,Love=?, Type = ?,UserId=?, Name = ?,Image = ?,Country = ? ";
         $post_obj = $this->conn->prepare($post_query);
-        $post_obj->bind_param("sssssssss", $this->post_content, $this->post_picture, $this->post_created, $this->post_status, $this->post_love, $this->post_type, $this->post_user_id, $this->post_name, $this->post_image);
+        $post_obj->bind_param("ssssssssss", $this->post_content, $this->post_picture, $this->post_created, $this->post_status, $this->post_love, $this->post_type, $this->post_user_id, $this->post_name, $this->post_image, $this->post_country);
         if($post_obj->execute()){
             return true;
         }
         return false;
     }
     public function getPostPagination(){
-        $posts_query=("SELECT p.Type,p.Id, p.Name,p.Image,p.UserId,p.Content AS Content,p.Picture AS Picture,p.Created AS Created ,p.Love AS Love 
+        $posts_query=("SELECT p.Type,p.Id, p.Name,p.Image,p.UserId,p.Content AS Content,p.Picture AS Picture,p.Created AS Created ,p.Country,p.Love AS Love 
 ,(CASE WHEN l.UserForId >0 THEN 'true' ELSE 'false' END) AS value FROM post AS p 
 LEFT JOIN (SELECT * FROM love WHERE UserForId =? AND Type=? ) AS l ON p.Id = l.PostId where p.Status=1 ORDER BY p.Created DESC LIMIT? OFFSET?");
         $posts_query_obj = $this->conn->prepare($posts_query);
@@ -866,9 +869,9 @@ LEFT JOIN (SELECT * FROM love WHERE UserForId =? AND Type=? ) AS l ON p.Id = l.P
 
     }
     public function create_reply(){
-        $reply_query = "INSERT into reply SET Content=?,  Created=?, Status = ?, Type = ?,Username = ?,UserImage = ?,CommentsId = ? ";
+        $reply_query = "INSERT into reply SET Content=?,  Created=?, Status = ?, Type = ?,Username = ?,UserImage = ?,CommentsId = ? ,Country = ? ";
         $reply_obj = $this->conn->prepare($reply_query);
-        $reply_obj->bind_param("sssssss", $this->reply_content, $this->reply_created, $this->reply_status, $this->reply_type, $this->reply_name, $this->reply_image, $this->reply_comments_id);
+        $reply_obj->bind_param("ssssssss", $this->reply_content, $this->reply_created, $this->reply_status, $this->reply_type, $this->reply_name, $this->reply_image, $this->reply_comments_id, $this->reply_country);
         if($reply_obj->execute()){
             return true;
         }
@@ -930,7 +933,7 @@ LEFT JOIN (SELECT * FROM love WHERE UserForId =? AND Type=? ) AS l ON p.Id = l.P
         return false;
     }
     public function getCommentsList(){
-        $comments_query=("SELECT c.Id,c.Type, c.Content,c.UserImage,c.UserName,c.Created,c.Love
+        $comments_query=("SELECT c.Id,c.Type, c.Content,c.UserImage,c.UserName,c.Created,c.Love,c.Country
 ,(CASE WHEN l.UserForId >0 THEN 'true' ELSE 'false' END) AS IsValue FROM comments AS c 
 LEFT JOIN (SELECT * FROM likes WHERE UserForId =? AND TYPE=?) 
 AS l ON c.Id = l.PostId WHERE c.PostId=? ORDER BY c.Created ");
@@ -968,9 +971,9 @@ AS l ON c.Id = l.PostId WHERE c.PostId=? ORDER BY c.Created ");
         return false;
     }
     public function create_comments(){
-        $comments_query = "INSERT into comments SET Content=?,  Created=?, Status = ?,Love=?, Type = ?,UserId=?, Username = ?,UserImage = ?,PostId = ? ";
+        $comments_query = "INSERT into comments SET Content=?,  Created=?, Status = ?,Love=?, Type = ?,UserId=?, Username = ?,UserImage = ?,PostId = ?,Country = ? ";
         $comments_obj = $this->conn->prepare($comments_query);
-        $comments_obj->bind_param("sssssssss", $this->comments_content, $this->comments_created, $this->comments_status, $this->comments_love, $this->comments_type, $this->comments_user_id, $this->comments_name, $this->comments_image, $this->comments_post_id);
+        $comments_obj->bind_param("ssssssssss", $this->comments_content, $this->comments_created, $this->comments_status, $this->comments_love, $this->comments_type, $this->comments_user_id, $this->comments_name, $this->comments_image, $this->comments_post_id, $this->comments_country);
         if($comments_obj->execute()){
             return true;
         }
