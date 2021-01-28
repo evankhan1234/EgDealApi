@@ -39,6 +39,7 @@ if($_SERVER['REQUEST_METHOD'] === "POST"){
             $user_obj->reply_image = $data->UserImage;
             $user_obj->reply_name= $data->Username;
             $user_obj->reply_status = $data->Status;
+            $user_obj->reply_country = $data->Country;
 
             if($user_obj->create_reply()){
 
