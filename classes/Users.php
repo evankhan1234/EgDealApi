@@ -442,7 +442,19 @@ class Users
 
         return array();
     }
-
+    public function getShopServiceUsers()
+    {
+        $query = ("Select * from mkt_service WHERE status=1 and type=?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s",$this->type);
+        $units = array();
+        if ($obj->execute()) {
+            $data = $obj->get_result();
+            while ($item = $data->fetch_assoc())
+                $units[] = $item;
+            return $units;
+        }
+    }
     public function getUser()
     {
         $result = $this->conn->query("Select * from mkt_service WHERE status=1");
@@ -764,7 +776,19 @@ class Users
             return $units;
         }
     }
-
+    public function getProductByCategoryId()
+    {
+        $query = ("SELECT * from inv_item where category_id=?");
+        $obj = $this->conn->prepare($query);
+        $obj->bind_param("s", $this->category_id);
+        $units = array();
+        if ($obj->execute()) {
+            $data = $obj->get_result();
+            while ($item = $data->fetch_assoc())
+                $units[] = $item;
+            return $units;
+        }
+    }
     public function getOrderByCustomerId()
     {
         $query = ("SELECT * from sls_order where customer_id=?");
